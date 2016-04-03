@@ -1,0 +1,15 @@
+Arduboy arduboy;
+byte enemy_count = 0;
+byte player_x;
+byte player_y;
+byte player_HP = 2;
+byte death_countdown = 0;
+boolean player_is_alive = true;
+boolean gameBegun = false;
+byte framecount = 0;
+byte countdown;
+byte text_countdown = 0;
+byte shot_count = 0;
+byte bx[21];
+byte by[21];
+int score = 0;
