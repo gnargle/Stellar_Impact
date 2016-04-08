@@ -4,7 +4,7 @@ class Star{
     byte depth = 1;
     byte depth_countdown;
     byte x = 127;
-    byte y = random(8, HEIGHT);
+    byte y = random(0, HEIGHT);
     bool star_exists = true;
 
     void position_update(){

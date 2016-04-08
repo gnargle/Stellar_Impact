@@ -17,12 +17,13 @@
 
 void title_menu(){
     score = 0;
-    arduboy.setCursor((WIDTH/2) - ((sizeof("Press fire") - 1) * CHAR_WIDTH /2)
+    arduboy.drawBitmap(0,0,StellarImpactTitle,128,64,WHITE);
+    /*arduboy.setCursor((WIDTH/2) - ((sizeof("Press fire") - 1) * CHAR_WIDTH /2)
     , (HEIGHT/2) - (CHAR_HEIGHT / 2));
     arduboy.print("Press fire");
     arduboy.setCursor((WIDTH/2) - ((sizeof("to start") - 1) * CHAR_WIDTH /2)
     , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
-    arduboy.print("to start");
+    arduboy.print("to start");*/
     if (death_countdown != 0){ death_countdown--; return;}
     if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
       gameBegun = true; 
@@ -49,7 +50,6 @@ void loop() {
     arduboy.display();
   }
   else{
-   // player_update();
     enemies_update(enemy_arr);
     create_enemies();
     starfield_update(starfield_arr);
