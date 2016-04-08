@@ -1,8 +1,8 @@
-# SHMUP
+# Stellar Impact
 
 #What is this?
 
-It's a game for the Arduboy game system.
+It's a shmup for the Arduboy game system.
 
 #How do I play?
 
