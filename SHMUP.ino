@@ -1,7 +1,9 @@
 #include "Arduboy.h"
 #include "globals.h"
 #include "image_data.h"
+#include "inv.h"
 #include "enemy.h"
+#include "starfield.h"
 #include "class_arrays.h"
 #include "helper_functions.h"
 #include "player.h"
@@ -22,7 +24,12 @@ void title_menu(){
     , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
     arduboy.print("to start");
     if (death_countdown != 0){ death_countdown--; return;}
-    if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {gameBegun = true; player_HP = 2; player_is_alive = true;}
+    if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
+      gameBegun = true; 
+      player_HP = 3; 
+      player_is_alive = true;
+      star_create_gamestart();
+      }
 }
 
 void setup() {
@@ -37,17 +44,22 @@ void loop() {
   // pause render until it's time for the next frame
   if (!(arduboy.nextFrame())) return;
   arduboy.clear();
-  if (!gameBegun) title_menu();
+  if (!gameBegun) {
+    title_menu(); 
+    arduboy.display();
+  }
   else{
-    player_update();
-    //enemy_arr[0].enemy_update();
+   // player_update();
     enemies_update(enemy_arr);
     create_enemies();
+    starfield_update(starfield_arr);
+    create_stars();
+    player_update();
+    char port[22] = "";
+    sprintf(port, "HP:%i Score:%i Bombs:%i", player_HP, score, bomb_num);
+    debug(port,0,0);
   }
-  char port[11] = "";
-  sprintf(port, "score: %i", score);
-  debug(port,0,0);
-  arduboy.display();
+  if (gameBegun)arduboy.display();
 }
 
 
