@@ -12,3 +12,5 @@ This game uses a lot of RAM. This means that sometimes the Arduboy can have trou
 To fix this, hold both the left and up dpad keys while you boot arduboy. Then flash from there.
 This is a problem with arduino's flashing system, not my code, so, sorry! 
 
+#This code is a mess!
+I know, I'm sorry. It's also completely uncommented. At the minute, this is just a personal beta release, when I'm happy the game is in a finished state, I'll add comments and attempt to clean it up a bit.
