@@ -9,6 +9,28 @@ PROGMEM const unsigned char shot[] = {
   0b00011000,
 };
 
+PROGMEM const unsigned char bomb[] = {
+  0b00111100,
+  0b01000010,
+  0b10000101,
+  0b10111101,
+  0b10111101,
+  0b10000101,
+  0b01000010,
+  0b00111100,  
+};
+
+PROGMEM const unsigned char heart[] = {
+  0b00001110,
+  0b00111111,
+  0b01111110,
+  0b11111100,
+  0b11111100,
+  0b01111110,
+  0b00111111,
+  0b00001110, 
+};
+
 PROGMEM const unsigned char shipwhole[] = {
   0b01000010,
   0b10100101,

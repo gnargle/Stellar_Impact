@@ -55,9 +55,10 @@ void loop() {
     starfield_update(starfield_arr);
     create_stars();
     player_update();
-    char port[22] = "";
-    sprintf(port, "HP:%i Score:%i Bombs:%i", player_HP, score, bomb_num);
-    debug(port,0,0);
+    draw_ui();
+    //char port[22] = "";
+    //sprintf(port, "HP:%i Score:%i Bombs:%i", player_HP, score, bomb_num);
+    //debug(port,0,0);
   }
   if (gameBegun)arduboy.display();
 }

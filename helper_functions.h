@@ -64,3 +64,21 @@ void star_create_gamestart(){
   }
 }
 
+void draw_ui(){
+  arduboy.drawBitmap(0,0,heart,8,8,WHITE);
+  arduboy.setCursor(10,0);
+  char port[3] = "";
+  sprintf(port, "x%i", player_HP);
+  arduboy.print(port);
+  arduboy.drawBitmap(24+4,0,bomb,8,8,WHITE);
+  arduboy.setCursor(36+4,0);
+  sprintf(port, "x%i", bomb_num);
+  arduboy.print(port);
+  arduboy.setCursor(50+8,0);
+  arduboy.print("Score:");
+  char port1[3] = "";
+  sprintf(port1, "%i", score);
+  arduboy.setCursor(86+8,0);
+  arduboy.print(port1);
+}
+
