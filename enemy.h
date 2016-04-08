@@ -51,7 +51,7 @@ class Enemy{
 
   void check_HP(){
     if (HP <= 0){
-      death_stuff(); 
+      death_stuff();
       score+= score_worth; 
     }
   }
@@ -162,7 +162,7 @@ class Enemy{
 };
 
 void enemies_update(Enemy* enemy_array){
-  for (int i = 0; i <= 19; i++){
+  for (int i = 0; i <= 14; i++){
     if(enemy_array[i].isEnemy == true){
       enemy_array[i].enemy_update();
     }

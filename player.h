@@ -15,7 +15,7 @@ void check_player_buttons(){
       bx[shot_count] = player_x+16;
       by[shot_count] = player_y+1;
       shot_count++;
-      if(shot_count > 20) shot_count= 0;
+      if(shot_count > 16) shot_count= 0;
       countdown = 30;
     }
   }
@@ -37,9 +37,9 @@ void check_player_buttons(){
 }
 
 void check_player_bullets(){
-  for (int i = 0; i <= 20; i++){
+  for (int i = 0; i <= 16; i++){
     if (bx[i] != NULL && by[i] != NULL){
-      for (int e = 0; e <= 19; e++){
+      for (int e = 0; e <= 14; e++){
         if ((bx[i] >= enemy_arr[e].x && bx[i] <= enemy_arr[e].x+enemy_arr[e].width
         && by[i] >= enemy_arr[e].y && by[i] <= enemy_arr[e].y+enemy_arr[e].height)
         ||(bx[i]+8 >= enemy_arr[e].x && bx[i]+8 <= enemy_arr[e].x+enemy_arr[e].width
@@ -68,12 +68,13 @@ void player_death_stuff(){
   gameBegun = 0;
   enemy_count = 0;
   enemy_countdown = enemy_countdown_initial;
+  countdown = 30;
   player_x = 0;
   player_y = (HEIGHT / 2);
   player_last_HP = player_HP;
   player_inv_countdown = 0;
   bomb_num = 3;
-  for (int i=0; i <= 19; i++){
+  for (int i=0; i <= 14; i++){
     enemy_arr[i].death_stuff();
   }
 }

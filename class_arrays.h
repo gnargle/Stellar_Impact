@@ -1,2 +1,2 @@
-Enemy enemy_arr[20];
+Enemy enemy_arr[15];
 Star starfield_arr[30];

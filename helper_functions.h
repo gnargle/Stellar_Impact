@@ -7,7 +7,7 @@ void debug(char* debug_text, int x, int y){
 void create_enemies(){
   if (!timeGo)return;
   if (enemy_countdown == 0){
-      if (enemy_count <= 19){
+      if (enemy_count < 14){
         if (enemy_arr[enemy_count+1].isEnemy == false){
           Enemy newenemy;
           newenemy.isEnemy = true;
@@ -16,7 +16,7 @@ void create_enemies(){
         }
         enemy_count +=1;
       }
-      if (enemy_count > 19) enemy_count = 0;
+      if (enemy_count >= 14 || enemy_count < 0 || enemy_count ==256) enemy_count = 0;
       enemy_countdown = enemy_countdown_initial;
   }
   else {enemy_countdown--;}
@@ -81,4 +81,3 @@ void draw_ui(){
   arduboy.setCursor(86+8,0);
   arduboy.print(port1);
 }
-

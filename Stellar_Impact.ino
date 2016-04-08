@@ -55,10 +55,15 @@ void loop() {
     starfield_update(starfield_arr);
     create_stars();
     player_update();
+    if (score > 100 || score < 0){
+      debug("glitch m8", 0, 47);
+    }
+    //char port[10] = "";
+    //short *ip = NULL; 
+    //ip = &score-1;
+    //sprintf(port, "%i", (void*) *ip); // ok, so 0x366 is the score's location in mem
+    //debug(port, 0, 54);
     draw_ui();
-    //char port[22] = "";
-    //sprintf(port, "HP:%i Score:%i Bombs:%i", player_HP, score, bomb_num);
-    //debug(port,0,0);
   }
   if (gameBegun)arduboy.display();
 }
