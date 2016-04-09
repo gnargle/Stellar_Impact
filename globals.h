@@ -5,8 +5,6 @@ byte enemy_countdown = enemy_countdown_initial;
 byte star_count = 0;
 byte star_countdown_initial_depth = 6;
 byte star_countdown_depth = star_countdown_initial_depth;
-byte star_countdown_depth1 = 2*star_countdown_initial_depth;
-byte star_countdown_depth2 = 3*star_countdown_initial_depth;
 byte player_x;
 byte player_y;
 byte player_HP = 3;

@@ -32,6 +32,25 @@ class Enemy{
 
   void death_stuff(){
     isEnemy = false;
+    if (random(0,59) == 0){
+      Item newitem;
+      newitem.x = x;
+      newitem.y = y;
+      newitem.movement_rate = framedelay;
+      if(random(1,3) == 1){
+        newitem.itemType = false;
+      }
+      else{
+        newitem.itemType = true;
+      }
+      newitem.isItem = true;
+      for(int i = 0; i<=5;i++){
+        if (item_arr[i].isItem == false){
+          item_arr[i] = newitem;
+          break;
+        }
+      }
+    }
     x = NULL;
     y = NULL;
     for (int i = 0; i<6; i++){
@@ -169,3 +188,4 @@ void enemies_update(Enemy* enemy_array){
   }
 }
 
+Enemy enemy_arr[15];

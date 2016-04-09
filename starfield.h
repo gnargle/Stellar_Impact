@@ -34,3 +34,4 @@ void starfield_update(Star* star_arr){
   }
 }
 
+Star starfield_arr[30];

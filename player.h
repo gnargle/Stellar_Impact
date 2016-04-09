@@ -61,6 +61,25 @@ void check_player_bullets(){
   }
 }
 
+void check_player_coll_items(){
+  for (int i = 0; i<=5;i++){
+    if((player_x >= item_arr[i].x && player_x <= item_arr[i].x+8
+    && player_y >= item_arr[i].y && player_y <= item_arr[i].y+8)
+    ||(player_x +16 >= item_arr[i].x && player_x +16 <= item_arr[i].x+8
+    && player_y+8 >= item_arr[i].y && player_y+8 <= item_arr[i].y+8)){
+      if(item_arr[i].itemType == true && item_arr[i].isItem){
+        bomb_num++;
+        if(bomb_num > 9) bomb_num = 9;
+      }
+      else if (item_arr[i].itemType == false && item_arr[i].isItem){
+        player_HP++;
+        if (player_HP >9) player_HP = 9;
+      }
+      item_arr[i].isItem = false;
+    }
+  }
+}
+
 void player_death_stuff(){
   player_is_alive = false;
   score = 0;
@@ -125,6 +144,7 @@ void player_update(){
   check_player_HP();
   check_player_buttons();
   check_player_bullets();
+  check_player_coll_items();
   player_animation();
 }
 

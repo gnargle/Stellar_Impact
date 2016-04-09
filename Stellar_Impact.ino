@@ -2,9 +2,9 @@
 #include "globals.h"
 #include "image_data.h"
 #include "inv.h"
+#include "items.h"
 #include "enemy.h"
 #include "starfield.h"
-#include "class_arrays.h"
 #include "helper_functions.h"
 #include "player.h"
 
@@ -54,10 +54,8 @@ void loop() {
     create_enemies();
     starfield_update(starfield_arr);
     create_stars();
+    item_arr_update(item_arr);
     player_update();
-    if (score > 100 || score < 0){
-      debug("glitch m8", 0, 47);
-    }
     //char port[10] = "";
     //short *ip = NULL; 
     //ip = &score-1;

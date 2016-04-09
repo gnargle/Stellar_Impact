@@ -41,17 +41,7 @@ void create_stars(){
     star_create_depth(random(1,4));
     star_countdown_depth = star_countdown_initial_depth;
   }
-  /*if (star_countdown_depth1 == 0){
-    star_create_depth(2);
-    star_countdown_depth1 = 2*star_countdown_initial_depth;
-  }
-  if (star_countdown_depth2 == 0){
-    star_create_depth(3);
-    star_countdown_depth = 3*star_countdown_initial_depth;
-  }*/
   star_countdown_depth--;
-  //star_countdown_depth1--;
-  //star_countdown_depth2--;
 }
 
 void star_create_gamestart(){
