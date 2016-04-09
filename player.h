@@ -16,7 +16,7 @@ void check_player_buttons(){
       by[shot_count] = player_y+1;
       shot_count++;
       if(shot_count > 16) shot_count= 0;
-      countdown = 30;
+      countdown = 45;
     }
   }
   if (countdown != 0){
@@ -81,25 +81,58 @@ void check_player_coll_items(){
 }
 
 void player_death_stuff(){
-  player_is_alive = false;
-  score = 0;
-  death_countdown = 60;
-  gameBegun = 0;
-  enemy_count = 0;
-  enemy_countdown = enemy_countdown_initial;
-  countdown = 30;
-  player_x = 0;
-  player_y = (HEIGHT / 2);
-  player_last_HP = player_HP;
-  player_inv_countdown = 0;
-  bomb_num = 3;
-  for (int i=0; i <= 14; i++){
-    enemy_arr[i].death_stuff();
+  if (death_countdown <= 180 && death_countdown > 165){
+    arduboy.drawBitmap(player_x,player_y,shipexplode,16,8,WHITE);
+  }
+  if (death_countdown <= 150 && death_countdown > 135){
+    arduboy.drawBitmap(player_x,player_y,shipexplode2,16,8,WHITE);
+  }
+  if (death_countdown <= 135 && death_countdown > 120){
+    arduboy.drawBitmap(player_x,player_y,shipexplode3,16,8,WHITE);
+  }
+  if (death_countdown <= 120 && death_countdown > 60){
+    arduboy.drawBitmap(player_x,player_y,shipexplode4,16,8,WHITE);
+  }
+  if (death_countdown != 60) death_countdown--;
+  if (death_countdown == 60){
+    arduboy.setCursor((WIDTH/2) - ((sizeof("Game Over") - 1) * CHAR_WIDTH /2)
+    , (HEIGHT/2) - (CHAR_HEIGHT / 2));
+    arduboy.print("Game Over");
+    arduboy.setCursor((WIDTH/2) - ((sizeof("Press fire") - 1) * CHAR_WIDTH /2)
+    , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
+    arduboy.print("Press fire");
+    if (death_countdown == 60 && (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON))){
+      score = 0;
+      gameBegun = 0;
+      enemy_count = 0;
+      enemy_countdown = enemy_countdown_initial;
+      countdown = 30;
+      player_x = 0;
+      player_y = (HEIGHT / 2);
+      player_last_HP = player_HP;
+      player_inv_countdown = 0;
+      bomb_num = 3;
+      bomb_countdown = 0;
+      for (int i=0; i <= 14; i++){
+        enemy_arr[i].death_stuff();
+      }
+      for (int i=0; i<=16; i++){
+        bx[i] = NULL;
+        by[i] = NULL;
+      }
+      for (int i=0; i<=5;i++){
+        item_arr[i].isItem = false;
+      }
+    }
   }
 }
 
 void check_player_HP(){
   if (player_HP <= 0){
+    player_is_alive = false;
+    if (death_countdown == 0){
+      death_countdown = 180;
+    }
     player_death_stuff();
   }
 }
@@ -139,7 +172,10 @@ void player_animation(){
 }
 
 void player_update(){
-  if (player_is_alive ==false) return;
+  if (player_is_alive ==false){
+    check_player_HP();
+    return;
+  }
   check_player_invincibility();
   check_player_HP();
   check_player_buttons();
