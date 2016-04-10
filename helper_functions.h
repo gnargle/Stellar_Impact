@@ -94,7 +94,7 @@ short read_High_Score(){
   short hs;
   for (int i = 0; i<=1; i++){
     val = read_EEPROM(addr+i);
-    if (val == 5) {
+    if (val == 255) {
       // if the EEPROM value is 255, it's uninitialised.
       // so we initialise it with a score of 100.
       if (i == 1){
