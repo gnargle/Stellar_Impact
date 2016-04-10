@@ -81,6 +81,10 @@ void check_player_coll_items(){
 }
 
 void player_death_stuff(){
+  if (!score_recorded) {
+    write_High_Score();
+    score_recorded = true;
+  }
   if (death_countdown <= 180 && death_countdown > 165){
     arduboy.drawBitmap(player_x,player_y,shipexplode,16,8,WHITE);
   }
@@ -102,6 +106,7 @@ void player_death_stuff(){
     , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
     arduboy.print("Press fire");
     if (death_countdown == 60 && (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON))){
+      score_recorded = false;
       score = 0;
       gameBegun = 0;
       enemy_count = 0;
