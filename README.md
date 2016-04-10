@@ -1,16 +1,5 @@
-# Stellar Impact
+# THIS BRANCH IS UNSTABLE.
 
-#What is this?
+Eeprom added, but now resetting doesn't work right. Booting into safe mode then flashing just resets the board, so you have to use the reset button and flash a known-working sketch before you can flash a new build of this. Not sure why.
 
-It's a shmup for the Arduboy game system.
-
-#How do I play?
-
-Download the zip file, unzip it to a folder named 'Stellar_Impact' in your arduino projects directory, then open the .ino file and flash it to your Arduboy.
-#WARNING
-This game uses a lot of RAM. This means that sometimes the Arduboy can have trouble flashing stuff again in its default mode.
-To fix this, hold both the left and up dpad keys while you boot arduboy. Then flash from there.
-This is a problem with arduino's flashing system, not my code, so, sorry! 
-
-#This code is a mess!
-I know, I'm sorry. It's also completely uncommented. At the minute, this is just a personal beta release, when I'm happy the game is in a finished state, I'll add comments and attempt to clean it up a bit.
+Don't install unless you know what you're doing. This won't brick your arduboy, but the process of resuscitating it is a pain.
