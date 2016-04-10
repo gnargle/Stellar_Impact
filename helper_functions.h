@@ -1,7 +1,29 @@
+
+
 void debug(char* debug_text, int x, int y){
   //max size 21
   arduboy.setCursor(x,y);
   arduboy.print(debug_text);  
+}
+
+
+void create_enemy_small(){ // small is the default so we don't have to change much
+  Enemy newenemy;
+  newenemy.isEnemy = true;
+  newenemy.on_spawn();
+  enemy_arr[enemy_count + 1] = newenemy;
+}
+
+void create_enemy_med(){
+  Enemy newenemy;
+  newenemy.isEnemy = true;
+  newenemy.framedelay = 2;
+  newenemy.enemy_type =1;
+  newenemy.score_worth = 2;
+  newenemy.shotdelayinitial = 50;
+  newenemy.shotdelay = 50;
+  newenemy.on_spawn();
+  enemy_arr[enemy_count + 1] = newenemy;
 }
 
 void create_enemies(){
@@ -9,10 +31,18 @@ void create_enemies(){
   if (enemy_countdown == 0){
       if (enemy_count < 14){
         if (enemy_arr[enemy_count+1].isEnemy == false){
-          Enemy newenemy;
-          newenemy.isEnemy = true;
-          newenemy.on_spawn();
-          enemy_arr[enemy_count + 1] = newenemy;
+          byte ran = random(0,2);
+          if (ran == 0){ 
+            create_enemy_small();
+          }
+          if (ran == 1){
+            if (med_countdown == 0){
+              create_enemy_med();
+            }
+            else{
+              create_enemy_small();
+            }
+          }
         }
         enemy_count +=1;
       }
@@ -20,6 +50,7 @@ void create_enemies(){
       enemy_countdown = enemy_countdown_initial;
   }
   else {enemy_countdown--;}
+  if (med_countdown > 0) med_countdown--;
 }
 
 void star_create_depth(byte depth){
@@ -71,3 +102,55 @@ void draw_ui(){
   arduboy.setCursor(86+8,0);
   arduboy.print(port1);
 }
+
+byte read_EEPROM(int address){
+  byte val;
+  val = EEPROM.read(address);
+  return val;
+}
+
+void write_EEPROM(int address, int val){
+  EEPROM.update(address, val);
+}
+
+short read_High_Score(){
+  // score should be 2 bytes long since we're using a short
+  // we will use bytes 54 and 55
+  //byte 54 is high byte, byte 55 is low byte
+  byte addr = 54;
+  byte val;
+  byte val_arr[2];
+  short hs;
+  for (int i = 0; i<=1; i++){
+    val = read_EEPROM(addr+i);
+    if (val == 255) {
+      // if the EEPROM value is 255, it's uninitialised.
+      // so we initialise it with a score of 100.
+      if (i == 1){
+        write_EEPROM(addr+i, 100); 
+        val = 1;
+      }
+      else{
+        write_EEPROM(addr+i,0);
+        val = 0;
+      }
+    }
+    val_arr[i] = val;
+  }
+  //by this point, we have a 2 value array containing the high and low bytes of high score.
+  //so we or them together with the high byte bitshifted to create a high score short
+  hs = (val_arr[0] << 8) | val_arr[1];
+  return hs;
+}
+
+void write_High_Score(){
+  if (score > high_score){
+    byte val;
+    byte val1;
+    val = score & 0xFF; // get low byte of score
+    write_EEPROM(55,val);
+    val1 = (score >> 8) & 0xFF; // get high byte of score
+    write_EEPROM(54,val1);
+  }
+}
+

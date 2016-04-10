@@ -1,3 +1,5 @@
+#include <EEPROM.h>
+
 #include "Arduboy.h"
 #include "globals.h"
 #include "image_data.h"
@@ -7,6 +9,7 @@
 #include "starfield.h"
 #include "helper_functions.h"
 #include "player.h"
+
 
 //Arduboy arduboy;
 
@@ -18,12 +21,11 @@
 void title_menu(){
     score = 0;
     arduboy.drawBitmap(0,0,StellarImpactTitle,128,64,WHITE);
-    /*arduboy.setCursor((WIDTH/2) - ((sizeof("Press fire") - 1) * CHAR_WIDTH /2)
-    , (HEIGHT/2) - (CHAR_HEIGHT / 2));
-    arduboy.print("Press fire");
-    arduboy.setCursor((WIDTH/2) - ((sizeof("to start") - 1) * CHAR_WIDTH /2)
-    , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
-    arduboy.print("to start");*/
+    high_score = read_High_Score();
+    char port[6] = "";
+    sprintf(port, "%i", high_score);
+    debug(port,2,28);
+    debug("new",0,0);
     if (death_countdown != 0){ death_countdown--; return;}
     if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
       gameBegun = true; 
@@ -56,12 +58,8 @@ void loop() {
     create_stars();
     item_arr_update(item_arr);
     player_update();
-    //char port[10] = "";
-    //short *ip = NULL; 
-    //ip = &score-1;
-    //sprintf(port, "%i", (void*) *ip); // ok, so 0x366 is the score's location in mem
-    //debug(port, 0, 54);
     draw_ui();
+    //write_High_Score();
   }
   if (gameBegun)arduboy.display();
 }
