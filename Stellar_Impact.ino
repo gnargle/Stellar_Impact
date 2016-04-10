@@ -25,7 +25,6 @@ void title_menu(){
     char port[6] = "";
     sprintf(port, "%i", high_score);
     debug(port,2,28);
-    debug("new",0,0);
     if (death_countdown != 0){ death_countdown--; return;}
     if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
       gameBegun = true; 
