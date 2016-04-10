@@ -2,13 +2,18 @@
 #define MEDIUM 1
 #define BIG 2
 #define BOSS 3
+#define UP true
+#define DOWN false
+#define Y_MIN 8
+#define Y_MAX (HEIGHT - 8)
 
 class Enemy{
   public:
     static const byte startX = WIDTH;
-    byte startY = random(8, HEIGHT-8);
+    byte startY = random(Y_MIN, Y_MAX);
     byte framedelay = 3;
-    byte shotdelay = 90;
+    byte shotdelayinitial=90;
+    byte shotdelay = shotdelayinitial;
     byte shotxs[6];
     byte shotys[6];
     byte shot_count = 0;
@@ -16,17 +21,18 @@ class Enemy{
     byte y = startY;
     byte enemy_type = SMALL;
     byte score_worth = 1;
-    byte width = 8; // small = 8, med = ?, big = ?, boss = ?
-    byte height = 8; // small = 8, med = ?, big = ?, boss = ?
+    byte width = 8; // small = 8, med = 8, big = ?, boss = ?
+    byte height = 8; // small = 8, med = 8, big = ?, boss = ?
     int HP = 1;
+    boolean v_dir = random(0,2);
     boolean isEnemy = false;
 
   void enemy_update(){
     switch (enemy_type){
-      case SMALL: update_enemy_small();
-      case MEDIUM: update_enemy_med();
-      case BIG: update_enemy_big();
-      case BOSS: update_enemy_boss(); 
+      case SMALL: update_enemy_small(); return;
+      case MEDIUM: update_enemy_med(); return;
+      case BIG: update_enemy_big(); return;
+      case BOSS: update_enemy_boss(); return;
     }
   }
 
@@ -95,20 +101,44 @@ class Enemy{
       }
     }
     for (int i = 0; i<=5; i++){
-      if ((shotxs[i]+4 >= player_x && shotxs[i]+4 <= player_x + 16 &&
-      shotys[i]+6 >= player_y && shotys[i]+6 <= player_y + 8) || 
-      (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x + 16 &&
-      shotys[i]+8 >= player_y && shotys[i]+8 <= player_y +8)){
-        shotxs[i] = WIDTH+10;
-        shotys[i] = HEIGHT+10;
-        if (player_inv_countdown <=0){
-          player_HP--;
-          player_invincibility(invincibility_length);
+      if (enemy_type == SMALL){
+        if ((shotxs[i]+4 >= player_x && shotxs[i]+4 <= player_x + 16 &&
+        shotys[i]+7 >= player_y && shotys[i]+7 <= player_y + 8) || 
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x + 16 &&
+        shotys[i]+8 >= player_y && shotys[i]+8 <= player_y +8)){
+          shotxs[i] = WIDTH+10;
+          shotys[i] = HEIGHT+10;
+          if (player_inv_countdown <=0){
+            player_HP--;
+            player_invincibility(invincibility_length);
+          }
+        }
+      }
+      else if (enemy_type == MEDIUM){
+        if ((shotxs[i] >= player_x && shotxs[i] <= player_x + 16 &&
+        shotys[i]+1 >= player_y && shotys[i]+1 <= player_y + 8) || 
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x + 16 &&
+        shotys[i]+1 >= player_y && shotys[i]+1 <= player_y +8) ||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+7 >= player_y && shotys[i]+7 <= player_y + 8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x + 16 &&
+        shotys[i]+7 >= player_y && shotys[i]+7 <= player_y +8)){
+          shotxs[i] = WIDTH+10;
+          shotys[i] = HEIGHT+10;
+          if (player_inv_countdown <=0){
+            player_HP--;
+            player_invincibility(invincibility_length);
+          }
         }
       }
       
       if(timeGo == false){
-        arduboy.drawBitmap(shotxs[i],shotys[i],enemyshot,8,8,WHITE);
+        if (enemy_type == SMALL){
+          arduboy.drawBitmap(shotxs[i],shotys[i],enemyshot,8,8,WHITE);
+        }
+        else if (enemy_type == MEDIUM){
+          arduboy.drawBitmap(shotxs[i],shotys[i],enemymedshot,8,8,WHITE);
+        }
       }
       else{
         if (shotxs[i] != WIDTH+10 && shotys[i] != HEIGHT+10){
@@ -117,8 +147,14 @@ class Enemy{
             shotys[i] = HEIGHT+10;
           }
           else{
-            arduboy.drawBitmap(shotxs[i],shotys[i],enemyshot,8,8,WHITE);
-            shotxs[i]--;
+            if (enemy_type == SMALL){
+              arduboy.drawBitmap(shotxs[i],shotys[i],enemyshot,8,8,WHITE);
+              shotxs[i]--;
+            }
+            else if (enemy_type == MEDIUM){
+              arduboy.drawBitmap(shotxs[i],shotys[i],enemymedshot,8,8,WHITE);
+              shotxs[i]--;
+            }
             
           }
         }
@@ -152,13 +188,13 @@ class Enemy{
       }
   
       else if ((framecount>=15 && framecount<30) || framecount>=45)  {
-        arduboy.drawBitmap(x,y,smallenemy1,7,8,WHITE);
+        arduboy.drawBitmap(x,y,smallenemy1,8,8,WHITE);
         last_enem_spr = 1;
       }
     }
     else{
       if (last_enem_spr = 0)arduboy.drawBitmap(x,y,smallenemy,8,8,WHITE);
-      else if (last_enem_spr = 1)arduboy.drawBitmap(x,y,smallenemy1,7,8,WHITE);
+      else if (last_enem_spr = 1)arduboy.drawBitmap(x,y,smallenemy1,8,8,WHITE);
     }
     check_enemy_collision_with_player();
     check_off_screen();
@@ -166,8 +202,45 @@ class Enemy{
     shoot();
     
   }
+  
   void update_enemy_med(){
-    
+   if (arduboy.everyXFrames(framedelay) && timeGo){
+      x--;
+      if (v_dir == UP && y > Y_MIN){
+        y--;
+      }
+      if (y <= Y_MIN){
+        v_dir = DOWN;
+      }
+      if (v_dir == DOWN && y <+ Y_MAX){
+        y++;
+      }
+      if (y >= Y_MAX){
+        v_dir = UP;
+      }
+      
+      
+    }
+
+    if (timeGo){
+      if (framecount<15 || (framecount>=30 && framecount<45)){
+        arduboy.drawBitmap(x,y,enemymed,8,8,WHITE);
+        last_enem_spr = 0;
+      }
+  
+      else if ((framecount>=15 && framecount<30) || framecount>=45)  {
+        arduboy.drawBitmap(x,y,enemymed1,8,8,WHITE);
+        last_enem_spr = 1;
+      }
+    }
+    else{
+      if (last_enem_spr = 0)arduboy.drawBitmap(x,y,enemymed,8,8,WHITE);
+      else if (last_enem_spr = 1)arduboy.drawBitmap(x,y,enemymed1,8,8,WHITE);
+    }
+    check_enemy_collision_with_player();
+    check_off_screen();
+    check_HP();
+    shoot();
   }
 
   void update_enemy_big(){

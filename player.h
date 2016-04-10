@@ -1,7 +1,7 @@
 #define CHAR_WIDTH 6
 #define CHAR_HEIGHT 8
 #define NUM_CHARS (sizeof("a") - 1)
-#define X_MIN 8
+#define Y_MIN 8
 #define X_MAX (WIDTH - 16)
 #define Y_MAX (HEIGHT - 8)
 
@@ -9,7 +9,7 @@ void check_player_buttons(){
   if (arduboy.pressed(RIGHT_BUTTON) && (player_x < X_MAX)) player_x++;
   if (arduboy.pressed(LEFT_BUTTON) && (player_x > 0)) player_x--;
   if (arduboy.pressed(DOWN_BUTTON) && (player_y < Y_MAX)) player_y++;
-  if (arduboy.pressed(UP_BUTTON) && (player_y > X_MIN)) player_y--;
+  if (arduboy.pressed(UP_BUTTON) && (player_y > Y_MIN)) player_y--;
   if (arduboy.pressed(B_BUTTON)){
     if (countdown <= 0){
       bx[shot_count] = player_x+16;
@@ -111,6 +111,7 @@ void player_death_stuff(){
       gameBegun = 0;
       enemy_count = 0;
       enemy_countdown = enemy_countdown_initial;
+      med_countdown = 900;
       countdown = 30;
       player_x = 0;
       player_y = (HEIGHT / 2);

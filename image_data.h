@@ -104,6 +104,17 @@ PROGMEM const unsigned char smallenemy[] = {
   0b00100010,
 };
 
+PROGMEM const unsigned char smallenemy1[] = {
+  0b11001100,
+  0b11010010,
+  0b11110010,
+  0b00111110,
+  0b01111110,
+  0b01111110,
+  0b00100010,
+  0b01010101,
+};
+
 PROGMEM const unsigned char enemyshot[] = {
   0b00000000,
   0b00000000,
@@ -115,15 +126,37 @@ PROGMEM const unsigned char enemyshot[] = {
   0b11000000,
 };
 
-PROGMEM const unsigned char smallenemy1[] = {
-  0b11001100,
-  0b11010010,
-  0b11110010,
-  0b00111110,
+PROGMEM const unsigned char enemymed[] = {
+  0b01000010,
+  0b01011010,
+  0b01110110,
+  0b00110100,
+  0b00111100,
+  0b00111100,
+  0b11000011,
+  0b01000010,
+};
+
+PROGMEM const unsigned char enemymed1[] = {
+  0b01000010,
+  0b01011010,
+  0b01110110,
+  0b00110100,
+  0b00111100,
   0b01111110,
-  0b01111110,
-  0b00100010,
-  0b01010101,
+  0b01100110,
+  0b10000001,
+};
+
+PROGMEM const unsigned char enemymedshot[] = {
+  0b01000010,
+  0b01000010,
+  0b01000010,
+  0b01000010,
+  0b01000010,
+  0b01000010,
+  0b01000010,
+  0b01000010,
 };
 
 PROGMEM const unsigned char StellarImpactTitle[] = {

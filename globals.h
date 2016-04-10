@@ -1,7 +1,8 @@
 Arduboy arduboy;
 byte enemy_count = 0;
-byte enemy_countdown_initial = 45;
+byte enemy_countdown_initial = 60;
 byte enemy_countdown = enemy_countdown_initial;
+short med_countdown = 900;
 byte star_count = 0;
 byte star_countdown_initial_depth = 6;
 byte star_countdown_depth = star_countdown_initial_depth;

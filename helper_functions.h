@@ -6,15 +6,43 @@ void debug(char* debug_text, int x, int y){
   arduboy.print(debug_text);  
 }
 
+
+void create_enemy_small(){ // small is the default so we don't have to change much
+  Enemy newenemy;
+  newenemy.isEnemy = true;
+  newenemy.on_spawn();
+  enemy_arr[enemy_count + 1] = newenemy;
+}
+
+void create_enemy_med(){
+  Enemy newenemy;
+  newenemy.isEnemy = true;
+  newenemy.framedelay = 2;
+  newenemy.enemy_type =1;
+  newenemy.score_worth = 2;
+  newenemy.shotdelayinitial = 50;
+  newenemy.shotdelay = 50;
+  newenemy.on_spawn();
+  enemy_arr[enemy_count + 1] = newenemy;
+}
+
 void create_enemies(){
   if (!timeGo)return;
   if (enemy_countdown == 0){
       if (enemy_count < 14){
         if (enemy_arr[enemy_count+1].isEnemy == false){
-          Enemy newenemy;
-          newenemy.isEnemy = true;
-          newenemy.on_spawn();
-          enemy_arr[enemy_count + 1] = newenemy;
+          byte ran = random(0,2);
+          if (ran == 0){ 
+            create_enemy_small();
+          }
+          if (ran == 1){
+            if (med_countdown == 0){
+              create_enemy_med();
+            }
+            else{
+              create_enemy_small();
+            }
+          }
         }
         enemy_count +=1;
       }
@@ -22,6 +50,7 @@ void create_enemies(){
       enemy_countdown = enemy_countdown_initial;
   }
   else {enemy_countdown--;}
+  if (med_countdown > 0) med_countdown--;
 }
 
 void star_create_depth(byte depth){
