@@ -23,7 +23,10 @@ void check_player_buttons(){
     countdown--;
   }
   if (arduboy.pressed(A_BUTTON) && bomb_num != 0 && bomb_countdown == 0){
-    bomb_countdown = 120;
+    bomb_countdown = 140;
+    bomb_rad = 1;
+    bomb_x = player_x;
+    bomb_y = player_y;
     timeGo = false;
     bomb_num--;
   }
@@ -123,6 +126,7 @@ void player_death_stuff(){
       player_inv_countdown = 0;
       bomb_num = 3;
       bomb_countdown = 0;
+      bomb_rad = 0;
       for (int i=0; i <= 14; i++){
         enemy_arr[i].death_stuff();
       }
@@ -179,6 +183,10 @@ void player_animation(){
   }
   framecount++;
   if (framecount > 59){framecount =0;}
+  if (bomb_rad != 0 && bomb_rad <= 140){
+    arduboy.drawCircle(bomb_x, bomb_y, bomb_rad, WHITE);
+    bomb_rad++;
+  }
 }
 
 void player_update(){
