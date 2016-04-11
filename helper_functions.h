@@ -20,7 +20,7 @@ void create_enemy_med(){
   newenemy.isEnemy = true;
   newenemy.framedelay = 2;
   newenemy.enemy_type = 1;
-  newenemy.score_worth = 2;
+  newenemy.score_worth = 5;
   newenemy.shotdelayinitial = 50;
   newenemy.shotdelay = 50;
   newenemy.on_spawn();
@@ -32,7 +32,7 @@ void create_enemy_big(){
   newenemy.isEnemy = true;
   newenemy.framedelay = 5;
   newenemy.enemy_type = 2;
-  newenemy.score_worth = 4;
+  newenemy.score_worth = 10;
   newenemy.width = 16;
   newenemy.height = 16;
   newenemy.HP = 4;
