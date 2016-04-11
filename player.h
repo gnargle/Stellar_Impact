@@ -16,7 +16,7 @@ void check_player_buttons(){
       by[shot_count] = player_y+1;
       shot_count++;
       if(shot_count > 16) shot_count= 0;
-      countdown = 45;
+      countdown = 37;
     }
   }
   if (countdown != 0){
@@ -113,30 +113,7 @@ void player_death_stuff(){
     , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
     arduboy.print("Press fire");
     if (death_countdown == 60 && (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON))){
-      score_recorded = false;
-      score = 0;
-      gameBegun = 0;
-      enemy_count = 0;
-      enemy_countdown = enemy_countdown_initial;
-      med_countdown = 900;
-      countdown = 30;
-      player_x = 0;
-      player_y = (HEIGHT / 2);
-      player_last_HP = player_HP;
-      player_inv_countdown = 0;
-      bomb_num = 3;
-      bomb_countdown = 0;
-      bomb_rad = 0;
-      for (int i=0; i <= 14; i++){
-        enemy_arr[i].death_stuff();
-      }
-      for (int i=0; i<=16; i++){
-        bx[i] = NULL;
-        by[i] = NULL;
-      }
-      for (int i=0; i<=5;i++){
-        item_arr[i].isItem = false;
-      }
+      reset_default_values();
     }
   }
 }

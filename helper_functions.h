@@ -1,4 +1,5 @@
-
+#define Y_MIN 8
+#define Y_MAX (HEIGHT - 8)
 
 void debug(char* debug_text, int x, int y){
   //max size 21
@@ -18,7 +19,7 @@ void create_enemy_med(){
   Enemy newenemy;
   newenemy.isEnemy = true;
   newenemy.framedelay = 2;
-  newenemy.enemy_type =1;
+  newenemy.enemy_type = 1;
   newenemy.score_worth = 2;
   newenemy.shotdelayinitial = 50;
   newenemy.shotdelay = 50;
@@ -26,12 +27,29 @@ void create_enemy_med(){
   enemy_arr[enemy_count + 1] = newenemy;
 }
 
+void create_enemy_big(){
+  Enemy newenemy;
+  newenemy.isEnemy = true;
+  newenemy.framedelay = 5;
+  newenemy.enemy_type = 2;
+  newenemy.score_worth = 4;
+  newenemy.width = 16;
+  newenemy.height = 16;
+  newenemy.HP = 4;
+  newenemy.shotdelayinitial = 70;
+  newenemy.shotdelay = 70;
+  newenemy.y = random (Y_MIN, Y_MAX - 8);
+  newenemy.on_spawn();
+  enemy_arr[enemy_count + 1] = newenemy;
+  big_countdown = 300;
+}
+
 void create_enemies(){
   if (!timeGo)return;
   if (enemy_countdown == 0){
       if (enemy_count < 14){
         if (enemy_arr[enemy_count+1].isEnemy == false){
-          byte ran = random(0,2);
+          byte ran = random(0,3);
           if (ran == 0){ 
             create_enemy_small();
           }
@@ -43,6 +61,19 @@ void create_enemies(){
               create_enemy_small();
             }
           }
+          if (ran == 2){
+            if (big_countdown == 0){
+              create_enemy_big();
+            }
+            else{
+              if (med_countdown == 0){
+                create_enemy_med();
+              }
+              else{
+                create_enemy_small();
+              }
+            }
+          }
         }
         enemy_count +=1;
       }
@@ -51,6 +82,7 @@ void create_enemies(){
   }
   else {enemy_countdown--;}
   if (med_countdown > 0) med_countdown--;
+  if (big_countdown >0) big_countdown--;
 }
 
 void star_create_depth(byte depth){
@@ -151,6 +183,34 @@ void write_High_Score(){
     write_EEPROM(55,val);
     val1 = (score >> 8) & 0xFF; // get high byte of score
     write_EEPROM(54,val1);
+  }
+}
+
+void reset_default_values(){
+  score_recorded = false;
+  score = 0;
+  gameBegun = 0;
+  enemy_count = 0;
+  enemy_countdown = enemy_countdown_initial;
+  med_countdown = 900;
+  big_countdown = 2400;
+  countdown = 30;
+  player_x = 0;
+  player_y = (HEIGHT / 2);
+  player_last_HP = player_HP;
+  player_inv_countdown = 0;
+  bomb_num = 3;
+  bomb_countdown = 0;
+  bomb_rad = 0;
+  for (int i=0; i <= 14; i++){
+    enemy_arr[i].death_stuff();
+  }
+  for (int i=0; i<=16; i++){
+    bx[i] = NULL;
+    by[i] = NULL;
+  }
+  for (int i=0; i<=5;i++){
+    item_arr[i].isItem = false;
   }
 }
 
