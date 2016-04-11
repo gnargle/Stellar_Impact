@@ -25,8 +25,8 @@ void check_player_buttons(){
   if (arduboy.pressed(A_BUTTON) && bomb_num != 0 && bomb_countdown == 0){
     bomb_countdown = 140;
     bomb_rad = 1;
-    bomb_x = player_x;
-    bomb_y = player_y;
+    bomb_x = player_x+8;
+    bomb_y = player_y+4;
     timeGo = false;
     bomb_num--;
   }
