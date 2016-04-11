@@ -38,7 +38,7 @@ class Enemy{
 
   void death_stuff(){
     isEnemy = false;
-    if (random(0,59) == 0){
+    if (random(0,44) == 0){
       Item newitem;
       newitem.x = x;
       newitem.y = y;
@@ -163,17 +163,25 @@ class Enemy{
   }
 
   void check_enemy_collision_with_player(){
+    if((player_x >= x && player_x <= x+width
+    && player_y >= y && player_y <= y+height)
+    ||(player_x >= x && player_x <= x+width
+    && player_y+8 >= y && player_y+8 <= y+height)
+    ||(player_x +16 >= x && player_x +16 <= x+width
+    && player_y >= y && player_y <= y+height)
+    ||(player_x +16 >= x && player_x +16 <= x+width
+    && player_y+8 >= y && player_y+8 <= y+height)){
     
-    if ((x >= player_x && x <= player_x + 16 &&
-      y >= player_y && y <= player_y + 8) || 
-      (x+width >= player_x && x+width <= player_x + 16 &&
-      y+height >= player_y && y+height <= player_y +8)){
-        if (player_inv_countdown <=0){
-          HP--;
-          player_HP--;
-          player_invincibility(invincibility_length);
-        }
+  /*if ((x >= player_x && x <= player_x + 16 &&
+    y >= player_y && y <= player_y + 8) || 
+    (x+width >= player_x && x+width <= player_x + 16 &&
+    y+height >= player_y && y+height <= player_y +8)){*/
+      HP--;
+      if (player_inv_countdown <=0){
+        player_HP--;
+        player_invincibility(invincibility_length);
       }
+    }
   }
 
   void update_enemy_small(){

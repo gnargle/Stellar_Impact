@@ -65,6 +65,10 @@ void check_player_coll_items(){
   for (int i = 0; i<=5;i++){
     if((player_x >= item_arr[i].x && player_x <= item_arr[i].x+8
     && player_y >= item_arr[i].y && player_y <= item_arr[i].y+8)
+    ||(player_x >= item_arr[i].x && player_x <= item_arr[i].x+8
+    && player_y+8 >= item_arr[i].y && player_y+8 <= item_arr[i].y+8)
+    ||(player_x +16 >= item_arr[i].x && player_x +16 <= item_arr[i].x+8
+    && player_y >= item_arr[i].y && player_y <= item_arr[i].y+8)
     ||(player_x +16 >= item_arr[i].x && player_x +16 <= item_arr[i].x+8
     && player_y+8 >= item_arr[i].y && player_y+8 <= item_arr[i].y+8)){
       if(item_arr[i].itemType == true && item_arr[i].isItem){
