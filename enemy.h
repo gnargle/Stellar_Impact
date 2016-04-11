@@ -43,7 +43,7 @@ class Enemy{
       newitem.x = x;
       newitem.y = y;
       newitem.movement_rate = framedelay;
-      if(random(1,3) == 1){
+      if(random(0,2) == 0){
         newitem.itemType = false;
       }
       else{
@@ -163,6 +163,7 @@ class Enemy{
   }
 
   void check_enemy_collision_with_player(){
+    if (!player_is_alive) return;
     if((player_x >= x && player_x <= x+width
     && player_y >= y && player_y <= y+height)
     ||(player_x >= x && player_x <= x+width
