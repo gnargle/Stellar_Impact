@@ -155,27 +155,23 @@ short read_High_Score(){
   //byte 54 is high byte, byte 55 is low byte
   byte addr = 54;
   byte val;
+  byte val1;
   byte val_arr[2];
   short hs;
-  for (int i = 0; i<=1; i++){
-    val = read_EEPROM(addr+i);
-    if (val == 255) {
+    val = read_EEPROM(addr);
+    val1 = read_EEPROM(addr+1);
+    if (val == 255 && val1 == 255) {
       // if the EEPROM value is 255, it's uninitialised.
       // so we initialise it with a score of 100.
-      if (i == 1){
-        write_EEPROM(addr+i, 100); 
-        val = 1;
-      }
-      else{
-        write_EEPROM(addr+i,0);
-        val = 0;
-      }
+        write_EEPROM(addr+1, 100); 
+        val = 100;
+        write_EEPROM(addr,0);
+        val1 = 0;
     }
-    val_arr[i] = val;
-  }
+    val_arr[0] = val;
   //by this point, we have a 2 value array containing the high and low bytes of high score.
   //so we or them together with the high byte bitshifted to create a high score short
-  hs = (val_arr[0] << 8) | val_arr[1];
+  hs = (val << 8) | val1;
   return hs;
 }
 
