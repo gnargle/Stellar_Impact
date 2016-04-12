@@ -50,6 +50,16 @@ void loop() {
     title_menu(); 
     arduboy.display();
   }
+  else if(gamePaused){
+    timeGo = false;
+    enemies_update(enemy_arr);
+    create_enemies();
+    starfield_update(starfield_arr);
+    create_stars();
+    item_arr_update(item_arr);
+    check_pause_combo();
+    draw_ui();
+  }
   else{
     enemies_update(enemy_arr);
     create_enemies();

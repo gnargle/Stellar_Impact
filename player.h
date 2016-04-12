@@ -39,6 +39,17 @@ void check_player_buttons(){
   }
 }
 
+void check_pause_combo(){
+  if (arduboy.pressed(A_BUTTON) && arduboy.pressed(B_BUTTON) && arduboy.pressed(UP_BUTTON)){
+    if (gamePaused == false){
+      gamePaused == true;
+    }
+    else{
+      gamePaused = false;
+    }
+  }
+}
+
 void check_player_bullets(){
   for (int i = 0; i <= 16; i++){
     if (bx[i] != NULL && by[i] != NULL){
@@ -141,9 +152,11 @@ void player_animation(){
   if (player_inv_countdown != 0){
     if (framecount<15){
       arduboy.drawBitmap(player_x,player_y,shipwhole,16,8,WHITE);
+      player_last_spr = true;
     }
     else if ((framecount>=30 && framecount<45))  {
       arduboy.drawBitmap(player_x,player_y,shipwhole1,16,8,WHITE);
+      player_last_spr = false;
     }
     else if ((framecount >=15 && framecount<30) || (framecount >=45)){
       //do nothing, blank sprite.
@@ -152,10 +165,12 @@ void player_animation(){
   else{
     if (framecount<15 || (framecount>=30 && framecount<45)){
       arduboy.drawBitmap(player_x,player_y,shipwhole,16,8,WHITE);
+      player_last_spr = true;
     }
     
     else if ((framecount>=15 && framecount<30) || framecount>=45)  {
       arduboy.drawBitmap(player_x,player_y,shipwhole1,16,8,WHITE);
+      player_last_spr = false;
     }
   }
   framecount++;
@@ -163,6 +178,15 @@ void player_animation(){
   if (bomb_rad != 0 && bomb_rad <= 140){
     arduboy.drawCircle(bomb_x, bomb_y, bomb_rad, WHITE);
     bomb_rad++;
+  }
+}
+
+void player_draw_pause(){
+  if (player_last_spr){
+    arduboy.drawBitmap(player_x,player_y,shipwhole,16,8,WHITE);
+  }
+  else{
+    arduboy.drawBitmap(player_x,player_y,shipwhole1,16,8,WHITE);
   }
 }
 
@@ -174,6 +198,7 @@ void player_update(){
   check_player_invincibility();
   check_player_HP();
   check_player_buttons();
+  check_pause_combo();
   check_player_bullets();
   check_player_coll_items();
   player_animation();
