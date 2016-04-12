@@ -325,11 +325,11 @@ class Enemy{
 };
 
 void enemies_update(Enemy* enemy_array){
-  for (int i = 0; i <= 14; i++){
+  for (int i = 0; i <= 9; i++){
     if(enemy_array[i].isEnemy == true){
       enemy_array[i].enemy_update();
     }
   }
 }
 
-Enemy enemy_arr[15];
+Enemy enemy_arr[10];

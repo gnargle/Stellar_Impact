@@ -47,7 +47,7 @@ void create_enemy_big(){
 void create_enemies(){
   if (!timeGo)return;
   if (enemy_countdown == 0){
-      if (enemy_count < 14){
+      if (enemy_count < 9){
         if (enemy_arr[enemy_count+1].isEnemy == false){
           byte ran = random(0,3);
           if (ran == 0){ 
@@ -77,7 +77,7 @@ void create_enemies(){
         }
         enemy_count +=1;
       }
-      if (enemy_count >= 14 || enemy_count < 0 || enemy_count ==256) enemy_count = 0;
+      if (enemy_count >= 9 || enemy_count < 0 || enemy_count ==256) enemy_count = 0;
       enemy_countdown = enemy_countdown_initial;
   }
   else {enemy_countdown--;}
@@ -202,7 +202,7 @@ void reset_default_values(){
   bomb_num = 3;
   bomb_countdown = 0;
   bomb_rad = 0;
-  for (int i=0; i <= 14; i++){
+  for (int i=0; i <= 9; i++){
     enemy_arr[i].death_stuff();
   }
   for (int i=0; i<=16; i++){

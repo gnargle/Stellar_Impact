@@ -42,7 +42,7 @@ void check_player_buttons(){
 void check_player_bullets(){
   for (int i = 0; i <= 16; i++){
     if (bx[i] != NULL && by[i] != NULL){
-      for (int e = 0; e <= 14; e++){
+      for (int e = 0; e <= 9; e++){
         if ((bx[i] >= enemy_arr[e].x && bx[i] <= enemy_arr[e].x+enemy_arr[e].width
         && by[i] >= enemy_arr[e].y && by[i] <= enemy_arr[e].y+enemy_arr[e].height)
         ||(bx[i]+8 >= enemy_arr[e].x && bx[i]+8 <= enemy_arr[e].x+enemy_arr[e].width
