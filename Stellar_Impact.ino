@@ -48,16 +48,18 @@ void loop() {
   arduboy.clear();
   if (!gameBegun) {
     title_menu(); 
+    //debug("new",0,0);
     arduboy.display();
   }
   else if(gamePaused){
-    timeGo = false;
+    //timeGo = false;
     enemies_update(enemy_arr);
     create_enemies();
     starfield_update(starfield_arr);
     create_stars();
     item_arr_update(item_arr);
     check_pause_combo();
+    player_draw_pause();
     draw_ui();
   }
   else{
@@ -66,6 +68,7 @@ void loop() {
     starfield_update(starfield_arr);
     create_stars();
     item_arr_update(item_arr);
+    check_pause_combo();
     player_update();
     draw_ui();
   }

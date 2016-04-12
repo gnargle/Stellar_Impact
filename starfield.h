@@ -9,7 +9,7 @@ class Star{
 
     void position_update(){
       if (x == 0) star_exists = false;
-      if (arduboy.everyXFrames(depth) && timeGo){
+      if (arduboy.everyXFrames(depth) && timeGo && !gamePaused){
         x--;
       }
     }

@@ -40,20 +40,26 @@ void check_player_buttons(){
 }
 
 void check_pause_combo(){
-  if (arduboy.pressed(A_BUTTON) && arduboy.pressed(B_BUTTON) && arduboy.pressed(UP_BUTTON)){
-    if (gamePaused == false){
-      gamePaused == true;
-    }
-    else{
-      gamePaused = false;
+  if(arduboy.pressed(RIGHT_BUTTON) && arduboy.pressed(LEFT_BUTTON)
+  && arduboy.pressed(UP_BUTTON) && arduboy.pressed(DOWN_BUTTON)){
+    if (pause_countdown <= 0){
+      if (gamePaused == false){
+        gamePaused = true;
+        pause_countdown = 30;
+      }
+      else{
+        gamePaused = false;
+        pause_countdown = 30;
+      }
     }
   }
+  if (pause_countdown > 0)  pause_countdown--;
 }
 
 void check_player_bullets(){
   for (int i = 0; i <= 16; i++){
     if (bx[i] != NULL && by[i] != NULL){
-      for (int e = 0; e <= 9; e++){
+      for (int e = 0; e <= max_enemies; e++){
         if ((bx[i] >= enemy_arr[e].x && bx[i] <= enemy_arr[e].x+enemy_arr[e].width
         && by[i] >= enemy_arr[e].y && by[i] <= enemy_arr[e].y+enemy_arr[e].height)
         ||(bx[i]+8 >= enemy_arr[e].x && bx[i]+8 <= enemy_arr[e].x+enemy_arr[e].width
@@ -69,7 +75,7 @@ void check_player_bullets(){
       }
       else{
         arduboy.drawBitmap(bx[i],by[i],shot,8,8,WHITE);
-        bx[i]++;
+        if (!gamePaused)bx[i]++;
       }
     }
   }
@@ -188,6 +194,10 @@ void player_draw_pause(){
   else{
     arduboy.drawBitmap(player_x,player_y,shipwhole1,16,8,WHITE);
   }
+  check_player_bullets();
+  if (bomb_rad != 0 && bomb_rad <= 140){
+    arduboy.drawCircle(bomb_x, bomb_y, bomb_rad, WHITE);
+  }
 }
 
 void player_update(){
@@ -198,7 +208,6 @@ void player_update(){
   check_player_invincibility();
   check_player_HP();
   check_player_buttons();
-  check_pause_combo();
   check_player_bullets();
   check_player_coll_items();
   player_animation();

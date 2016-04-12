@@ -4,6 +4,8 @@
 #define BOSS 3
 #define Y_MIN 8
 #define Y_MAX (HEIGHT - 8)
+#define CHAR_WIDTH 6
+#define CHAR_HEIGHT 8
 
 void debug(char* debug_text, int x, int y){
   //max size 21
@@ -49,9 +51,9 @@ void create_enemy_big(){
 }
 
 void create_enemies(){
-  if (!timeGo)return;
+  if (!timeGo || gamePaused)return;
   if (enemy_countdown == 0){
-      if (enemy_count < 9){
+      if (enemy_count < max_enemies){
         if (enemy_arr[enemy_count+1].isEnemy == false){
           byte ran = random(0,3);
           if (ran == SMALL){ 
@@ -81,7 +83,7 @@ void create_enemies(){
         }
         enemy_count +=1;
       }
-      if (enemy_count >= 9 || enemy_count < 0 || enemy_count ==256) enemy_count = 0;
+      if (enemy_count >= max_enemies || enemy_count < 0 || enemy_count ==256) enemy_count = 0;
       enemy_countdown = enemy_countdown_initial;
   }
   else {enemy_countdown--;}
@@ -103,7 +105,7 @@ void star_create_depth(byte depth){
 }
 
 void create_stars(){
-  if(!timeGo) return;
+  if(!timeGo || gamePaused) return;
   if (star_countdown_depth == 0){
     star_create_depth(random(1,4));
     star_countdown_depth = star_countdown_initial_depth;
@@ -137,6 +139,11 @@ void draw_ui(){
   sprintf(port1, "%i", score);
   arduboy.setCursor(86+8,0);
   arduboy.print(port1);
+  if (gamePaused){
+    arduboy.setCursor((WIDTH/2) - ((sizeof("Paused") - 1) * CHAR_WIDTH /2)
+    , (HEIGHT/2) - (CHAR_HEIGHT / 2));
+    arduboy.print("Paused");
+  }
 }
 
 byte read_EEPROM(int address){
@@ -202,7 +209,7 @@ void reset_default_values(){
   bomb_num = 3;
   bomb_countdown = 0;
   bomb_rad = 0;
-  for (int i=0; i <= 9; i++){
+  for (int i=0; i <= max_enemies; i++){
     enemy_arr[i].death_stuff();
   }
   for (int i=0; i<=16; i++){

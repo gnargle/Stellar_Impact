@@ -88,7 +88,7 @@ class Enemy{
   }
 
   void shoot(){
-    if (timeGo){
+    if (timeGo && !gamePaused){
       if (shotdelay == 0){
         shotxs[shot_count] = x - 6;
         shotys[shot_count] = y;
@@ -165,7 +165,7 @@ class Enemy{
         }
       }
       
-      if(timeGo == false){
+      if(!timeGo || gamePaused){
         if (enemy_type == SMALL){
           arduboy.drawBitmap(shotxs[i],shotys[i],enemyshot,8,8,WHITE);
         }
@@ -225,11 +225,11 @@ class Enemy{
   }
 
   void update_enemy_small(){
-    if (arduboy.everyXFrames(framedelay) && timeGo){
+    if (arduboy.everyXFrames(framedelay) && timeGo && !gamePaused){
       x--;
     }
 
-    if (timeGo){
+    if (timeGo && !gamePaused){
       if (framecount<15 || (framecount>=30 && framecount<45)){
         arduboy.drawBitmap(x,y,smallenemy,8,8,WHITE);
         last_enem_spr = 0;
@@ -252,7 +252,7 @@ class Enemy{
   }
   
   void update_enemy_med(){
-   if (arduboy.everyXFrames(framedelay) && timeGo){
+   if (arduboy.everyXFrames(framedelay) && timeGo && !gamePaused){
       x--;
       if (v_dir == UP && y > Y_MIN){
         y--;
@@ -270,7 +270,7 @@ class Enemy{
       
     }
 
-    if (timeGo){
+    if (timeGo && !gamePaused){
       if (framecount<15 || (framecount>=30 && framecount<45)){
         arduboy.drawBitmap(x,y,enemymed,8,8,WHITE);
         last_enem_spr = 0;
@@ -292,11 +292,11 @@ class Enemy{
   }
 
    void update_enemy_big(){
-    if (arduboy.everyXFrames(framedelay) && timeGo){
+    if (arduboy.everyXFrames(framedelay) && timeGo && !gamePaused){
       x--;
     }
 
-    if (timeGo){
+    if (timeGo && !gamePaused){
       if (framecount<15 || (framecount>=30 && framecount<45)){
         arduboy.drawBitmap(x,y,enemybig,16,16,WHITE);
         last_enem_spr = 0;
@@ -325,11 +325,11 @@ class Enemy{
 };
 
 void enemies_update(Enemy* enemy_array){
-  for (int i = 0; i <= 9; i++){
+  for (int i = 0; i <= max_enemies; i++){
     if(enemy_array[i].isEnemy == true){
       enemy_array[i].enemy_update();
     }
   }
 }
 
-Enemy enemy_arr[10];
+Enemy enemy_arr[10]; // this value is max_enemies+1

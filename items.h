@@ -21,7 +21,7 @@ class Item{
 
   void update_item_position(){
     if(!isItem) return;
-    if(arduboy.everyXFrames(movement_rate && timeGo)){
+    if(arduboy.everyXFrames(movement_rate && timeGo && !gamePaused)){
       x--;
     }
     if (x==0) isItem = false;

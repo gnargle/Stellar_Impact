@@ -1,5 +1,6 @@
 Arduboy arduboy;
 byte enemy_count = 0;
+byte max_enemies = 9;
 byte enemy_countdown_initial = 60;
 byte enemy_countdown = enemy_countdown_initial;
 short med_countdown = 1200;
@@ -18,6 +19,7 @@ byte death_countdown = 60;
 boolean player_is_alive = true;
 boolean gameBegun = false;
 boolean gamePaused = false;
+byte pause_countdown = 0;
 boolean score_recorded = false;
 byte framecount = 0;
 byte countdown = 30;
