@@ -1,3 +1,7 @@
+#define SMALL 0
+#define MEDIUM 1
+#define BIG 2
+#define BOSS 3
 #define Y_MIN 8
 #define Y_MAX (HEIGHT - 8)
 
@@ -19,7 +23,7 @@ void create_enemy_med(){
   Enemy newenemy;
   newenemy.isEnemy = true;
   newenemy.framedelay = 2;
-  newenemy.enemy_type = 1;
+  newenemy.enemy_type = MEDIUM;
   newenemy.score_worth = 5;
   newenemy.shotdelayinitial = 50;
   newenemy.shotdelay = 50;
@@ -31,7 +35,7 @@ void create_enemy_big(){
   Enemy newenemy;
   newenemy.isEnemy = true;
   newenemy.framedelay = 5;
-  newenemy.enemy_type = 2;
+  newenemy.enemy_type = BIG;
   newenemy.score_worth = 10;
   newenemy.width = 16;
   newenemy.height = 16;
@@ -50,10 +54,10 @@ void create_enemies(){
       if (enemy_count < 9){
         if (enemy_arr[enemy_count+1].isEnemy == false){
           byte ran = random(0,3);
-          if (ran == 0){ 
+          if (ran == SMALL){ 
             create_enemy_small();
           }
-          if (ran == 1){
+          if (ran == MEDIUM){
             if (med_countdown == 0){
               create_enemy_med();
             }
@@ -61,7 +65,7 @@ void create_enemies(){
               create_enemy_small();
             }
           }
-          if (ran == 2){
+          if (ran == BIG){
             if (big_countdown == 0){
               create_enemy_big();
             }

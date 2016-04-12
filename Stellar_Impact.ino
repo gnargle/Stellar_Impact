@@ -58,7 +58,6 @@ void loop() {
     item_arr_update(item_arr);
     player_update();
     draw_ui();
-    //write_High_Score();
   }
   if (gameBegun)arduboy.display();
 }
