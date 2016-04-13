@@ -46,10 +46,12 @@ void check_pause_combo(){
   && arduboy.pressed(UP_BUTTON) && arduboy.pressed(DOWN_BUTTON)){
     if (pause_countdown <= 0){
       if (gamePaused == false){
+        if (audio_enabled)tune.tone(800, 80);
         gamePaused = true;
         pause_countdown = 30;
       }
       else{
+        if (audio_enabled)tune.tone(700, 80);
         gamePaused = false;
         pause_countdown = 30;
       }
@@ -95,10 +97,12 @@ void check_player_coll_items(){
     ||(player_x +16 >= item_arr[i].x && player_x +16 <= item_arr[i].x+8
     && player_y+8 >= item_arr[i].y && player_y+8 <= item_arr[i].y+8)){
       if(item_arr[i].itemType == true && item_arr[i].isItem){
+        if (audio_enabled)tune.tone(500, 80);
         bomb_num++;
         if(bomb_num > 9) bomb_num = 9;
       }
       else if (item_arr[i].itemType == false && item_arr[i].isItem){
+        if (audio_enabled)tune.tone(600, 80);
         player_HP++;
         if (player_HP >9) player_HP = 9;
       }
