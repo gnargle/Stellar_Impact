@@ -110,6 +110,8 @@ class Enemy{
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
             if (audio_enabled)tune.tone(80, 80);
+            which_led = 1;
+            led_countdown = 15;
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -128,6 +130,8 @@ class Enemy{
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
             if (audio_enabled)tune.tone(80, 80);
+            which_led = 1;
+            led_countdown = 15;
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -162,6 +166,8 @@ class Enemy{
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
             if (audio_enabled)tune.tone(80, 80);
+            which_led = 1;
+            led_countdown = 15;
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -222,6 +228,7 @@ class Enemy{
       HP--;
       if (audio_enabled)tune.tone(100, 80);
       if (player_inv_countdown <=0){
+        arduboy.setRGBled(255,0,0);
         player_HP--;
         player_invincibility(invincibility_length);
       }

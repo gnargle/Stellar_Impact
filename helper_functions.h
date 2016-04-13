@@ -13,6 +13,20 @@ void debug(char* debug_text, int x, int y){
   arduboy.print(debug_text);  
 }
 
+void set_led(byte colour, byte value){
+  if (colour == 1){
+    arduboy.setRGBled(value,0,0);
+  }
+  else if(colour == 2){
+    arduboy.setRGBled(0,value,0);
+  }
+  else if(colour == 3){
+    arduboy.setRGBled(0,0,value);
+  }
+  else{
+    arduboy.setRGBled(0,0,0);
+  }
+}
 
 void create_enemy_small(){ // small is the default so we don't have to change much
   Enemy newenemy;

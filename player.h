@@ -25,6 +25,8 @@ void check_player_buttons(){
   }
   if (arduboy.pressed(A_BUTTON) && bomb_num != 0 && bomb_countdown == 0){
     if (audio_enabled)tune.tone(80,1800);
+    which_led = 2;
+    led_countdown = 140;
     bomb_countdown = 140;
     bomb_rad = 1;
     bomb_x = player_x+8;
@@ -69,6 +71,8 @@ void check_player_bullets(){
         ||(bx[i]+8 >= enemy_arr[e].x && bx[i]+8 <= enemy_arr[e].x+enemy_arr[e].width
         && by[i]+8 >= enemy_arr[e].y && by[i]+8 <= enemy_arr[e].y+enemy_arr[e].height)){
           enemy_arr[e].HP--;
+          which_led = 2;
+          led_countdown = 15;
           if (audio_enabled)tune.tone(100, 80);
           bx[i] = NULL;
           by[i] = NULL;
@@ -97,11 +101,15 @@ void check_player_coll_items(){
     ||(player_x +16 >= item_arr[i].x && player_x +16 <= item_arr[i].x+8
     && player_y+8 >= item_arr[i].y && player_y+8 <= item_arr[i].y+8)){
       if(item_arr[i].itemType == true && item_arr[i].isItem){
+        which_led = 3;
+        led_countdown = 15;
         if (audio_enabled)tune.tone(500, 80);
         bomb_num++;
         if(bomb_num > 9) bomb_num = 9;
       }
       else if (item_arr[i].itemType == false && item_arr[i].isItem){
+        which_led = 3;
+        led_countdown = 15;
         if (audio_enabled)tune.tone(600, 80);
         player_HP++;
         if (player_HP >9) player_HP = 9;
@@ -119,21 +127,26 @@ void player_death_stuff(){
   if (death_countdown <= 180 && death_countdown > 165){
     arduboy.drawBitmap(player_x,player_y,shipexplode,16,8,WHITE);
     if (audio_enabled)tune.tone(60, 80);
+    arduboy.setRGBled(255,0,0);
   }
   if (death_countdown <= 150 && death_countdown > 135){
     arduboy.drawBitmap(player_x,player_y,shipexplode2,16,8,WHITE);
     if (audio_enabled)tune.tone(50, 80);
+    arduboy.setRGBled(200,0,0);
   }
   if (death_countdown <= 135 && death_countdown > 120){
     arduboy.drawBitmap(player_x,player_y,shipexplode3,16,8,WHITE);
     if (audio_enabled)tune.tone(40, 80);
+    arduboy.setRGBled(150,0,0);
   }
   if (death_countdown <= 120 && death_countdown > 60){
     arduboy.drawBitmap(player_x,player_y,shipexplode4,16,8,WHITE);
     if (audio_enabled)tune.tone(30, 80);
+    arduboy.setRGBled(100,0,0);
   }
   if (death_countdown != 60) death_countdown--;
   if (death_countdown == 60){
+    arduboy.setRGBled(0,0,0);
     arduboy.setCursor((WIDTH/2) - ((sizeof("Game Over") - 1) * CHAR_WIDTH /2)
     , (HEIGHT/2) - (CHAR_HEIGHT / 2));
     arduboy.print("Game Over");

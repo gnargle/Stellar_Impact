@@ -74,6 +74,7 @@ void loop() {
   }
   else if(gamePaused){
     //timeGo = false;
+    set_led(0,0);
     enemies_update(enemy_arr);
     create_enemies();
     starfield_update(starfield_arr);
@@ -84,6 +85,13 @@ void loop() {
     draw_ui();
   }
   else{
+    if(led_countdown > 0){
+      set_led(which_led, led_countdown);
+    }
+    else{
+      set_led(0,0);
+    }
+    if (led_countdown >0) led_countdown--;
     enemies_update(enemy_arr);
     create_enemies();
     starfield_update(starfield_arr);
