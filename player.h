@@ -12,6 +12,7 @@ void check_player_buttons(){
   if (arduboy.pressed(UP_BUTTON) && (player_y > Y_MIN)) player_y--;
   if (arduboy.pressed(B_BUTTON)){
     if (countdown <= 0){
+      if (audio_enabled) tune.tone(300, 80);
       bx[shot_count] = player_x+16;
       by[shot_count] = player_y+1;
       shot_count++;
@@ -23,6 +24,7 @@ void check_player_buttons(){
     countdown--;
   }
   if (arduboy.pressed(A_BUTTON) && bomb_num != 0 && bomb_countdown == 0){
+    if (audio_enabled)tune.tone(80,1800);
     bomb_countdown = 140;
     bomb_rad = 1;
     bomb_x = player_x+8;
@@ -65,6 +67,7 @@ void check_player_bullets(){
         ||(bx[i]+8 >= enemy_arr[e].x && bx[i]+8 <= enemy_arr[e].x+enemy_arr[e].width
         && by[i]+8 >= enemy_arr[e].y && by[i]+8 <= enemy_arr[e].y+enemy_arr[e].height)){
           enemy_arr[e].HP--;
+          if (audio_enabled)tune.tone(100, 80);
           bx[i] = NULL;
           by[i] = NULL;
         }
@@ -111,15 +114,19 @@ void player_death_stuff(){
   }
   if (death_countdown <= 180 && death_countdown > 165){
     arduboy.drawBitmap(player_x,player_y,shipexplode,16,8,WHITE);
+    if (audio_enabled)tune.tone(60, 80);
   }
   if (death_countdown <= 150 && death_countdown > 135){
     arduboy.drawBitmap(player_x,player_y,shipexplode2,16,8,WHITE);
+    if (audio_enabled)tune.tone(50, 80);
   }
   if (death_countdown <= 135 && death_countdown > 120){
     arduboy.drawBitmap(player_x,player_y,shipexplode3,16,8,WHITE);
+    if (audio_enabled)tune.tone(40, 80);
   }
   if (death_countdown <= 120 && death_countdown > 60){
     arduboy.drawBitmap(player_x,player_y,shipexplode4,16,8,WHITE);
+    if (audio_enabled)tune.tone(30, 80);
   }
   if (death_countdown != 60) death_countdown--;
   if (death_countdown == 60){
@@ -130,6 +137,7 @@ void player_death_stuff(){
     , (HEIGHT/2) - (CHAR_HEIGHT / 2) + 10);
     arduboy.print("Press fire");
     if (death_countdown == 60 && (arduboy.pressed(A_BUTTON) || arduboy.pressed(B_BUTTON))){
+      if (audio_enabled)tune.tone(800, 80);
       reset_default_values();
     }
   }

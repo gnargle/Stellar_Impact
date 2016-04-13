@@ -1,4 +1,7 @@
 Arduboy arduboy;
+ArduboyAudio audio;
+ArduboyTunes tune;
+bool audio_enabled;
 byte enemy_count = 0;
 byte max_enemies = 9;
 byte enemy_countdown_initial = 60;

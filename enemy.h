@@ -109,6 +109,7 @@ class Enemy{
           shotxs[i] = WIDTH+10;
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
+            if (audio_enabled)tune.tone(80, 80);
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -126,6 +127,7 @@ class Enemy{
           shotxs[i] = WIDTH+10;
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
+            if (audio_enabled)tune.tone(80, 80);
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -159,6 +161,7 @@ class Enemy{
           shotxs[i] = WIDTH+10;
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
+            if (audio_enabled)tune.tone(80, 80);
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -217,6 +220,7 @@ class Enemy{
     (x+width >= player_x && x+width <= player_x + 16 &&
     y+height >= player_y && y+height <= player_y +8)){*/
       HP--;
+      if (audio_enabled)tune.tone(100, 80);
       if (player_inv_countdown <=0){
         player_HP--;
         player_invincibility(invincibility_length);

@@ -19,19 +19,36 @@
 
 
 void title_menu(){
-    score = 0;
-    arduboy.drawBitmap(0,0,StellarImpactTitle,128,64,WHITE);
-    high_score = read_High_Score();
-    char port[6] = "";
-    sprintf(port, "%i", high_score);
-    debug(port,2,28);
-    if (death_countdown != 0){ death_countdown--; return;}
-    if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
-      gameBegun = true; 
-      player_HP = 3; 
-      player_is_alive = true;
-      star_create_gamestart();
+  if (countdown >0) countdown--;
+  score = 0;
+  arduboy.drawBitmap(0,0,StellarImpactTitle,128,64,WHITE);
+  high_score = read_High_Score();
+  char port[6] = "";
+  sprintf(port, "%i", high_score);
+  debug(port,3,28);
+  if (death_countdown != 0){ death_countdown--; return;}
+
+  if (arduboy.pressed(DOWN_BUTTON) && countdown == 0){
+    audio_enabled = !audio_enabled;
+    countdown = 30;
+    if (audio_enabled == true){
+      audio.on();
+      tune.tone(200, 300);
       }
+    else{audio.off();}
+  }
+  if (audio_enabled == false){
+    debug("Muted",3,55);
+  }
+  if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
+    audio.saveOnOff();
+    if (audio_enabled)tune.tone(700, 150);
+    gameBegun = true; 
+    player_HP = 3; 
+    player_is_alive = true;
+    countdown = 30;
+    star_create_gamestart();
+  }
 }
 
 void setup() {
@@ -40,6 +57,10 @@ void setup() {
   arduboy.initRandomSeed();
   player_x = 0;
   player_y = (HEIGHT / 2);
+  audio_enabled = read_EEPROM(EEPROM_AUDIO_ON_OFF);
+  if (audio_enabled == true){audio.on();}
+  else{audio.off();}
+  
 }
 
 void loop() {
