@@ -19,7 +19,7 @@
 
 
 void title_menu(){
-  if (countdown >0) countdown--;
+  if (audio_countdown >0) audio_countdown--;
   score = 0;
   arduboy.drawBitmap(0,0,StellarImpactTitle,128,64,WHITE);
   high_score = read_High_Score();
@@ -28,9 +28,9 @@ void title_menu(){
   debug(port,3,28);
   if (death_countdown != 0){ death_countdown--; return;}
 
-  if (arduboy.pressed(DOWN_BUTTON) && countdown == 0){
+  if (arduboy.pressed(DOWN_BUTTON) && audio_countdown == 0){
     audio_enabled = !audio_enabled;
-    countdown = 30;
+    audio_countdown = 30;
     if (audio_enabled == true){
       audio.on();
       tune.tone(200, 300);
@@ -38,7 +38,8 @@ void title_menu(){
     else{audio.off();}
   }
   if (audio_enabled == false){
-    debug("Muted",3,55);
+    arduboy.setCursor(3,55);
+    arduboy.print("Muted");
   }
   if (arduboy.pressed(A_BUTTON)||arduboy.pressed(B_BUTTON)) {
     audio.saveOnOff();

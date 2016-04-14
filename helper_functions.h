@@ -157,6 +157,21 @@ void draw_ui(){
     arduboy.setCursor((WIDTH/2) - ((sizeof("Paused") - 1) * CHAR_WIDTH /2)
     , (HEIGHT/2) - (CHAR_HEIGHT / 2));
     arduboy.print("Paused");
+    if(audio_countdown == 0 && arduboy.pressed(DOWN_BUTTON) && !(arduboy.pressed(UP_BUTTON))
+    && !(arduboy.pressed(LEFT_BUTTON)) && !(arduboy.pressed(RIGHT_BUTTON))){
+      audio_enabled = !audio_enabled;
+      audio_countdown = 30;
+      if (audio_enabled == true){
+        audio.on();
+        tune.tone(200, 300);
+        }
+      else{audio.off();}
+    }
+    if (audio_enabled == false){
+      arduboy.setCursor(3,55);
+      arduboy.print("Muted");
+    }
+    if(audio_countdown > 0) audio_countdown--;
   }
 }
 
