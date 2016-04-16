@@ -38,7 +38,12 @@ class Enemy{
 
   void death_stuff(){
     isEnemy = false;
-    if (enemy_type == BOSS) boss_on_screen = false;
+    if (enemy_type == BOSS) {
+      boss_on_screen = false;
+    }
+    enemy_type = SMALL;
+    width = 8;
+    height = 8;
     if (random(0,44) == 0){
       Item newitem;
       newitem.x = x;
@@ -272,11 +277,6 @@ class Enemy{
     && player_y >= y && player_y <= y+height)
     ||(player_x +16 >= x && player_x +16 <= x+width
     && player_y+8 >= y && player_y+8 <= y+height)){
-    
-  /*if ((x >= player_x && x <= player_x + 16 &&
-    y >= player_y && y <= player_y + 8) || 
-    (x+width >= player_x && x+width <= player_x + 16 &&
-    y+height >= player_y && y+height <= player_y +8)){*/
       HP--;
       if (audio_enabled)tune.tone(100, 80);
       if (player_inv_countdown <=0){
@@ -391,10 +391,10 @@ class Enemy{
       if (y <= 0){
         v_dir = DOWN;
       }
-      if (v_dir == DOWN && y + 46 <= Y_MAX){
+      if (v_dir == DOWN && y + 46 <= Y_MAX+10){
         y++;
       }
-      if (y +46 >= Y_MAX){
+      if (y +46 >= Y_MAX +10){
         v_dir = UP;
       }
     }
