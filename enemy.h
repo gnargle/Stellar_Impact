@@ -38,6 +38,7 @@ class Enemy{
 
   void death_stuff(){
     isEnemy = false;
+    if (enemy_type == BOSS) boss_on_screen = false;
     if (random(0,44) == 0){
       Item newitem;
       newitem.x = x;
@@ -82,7 +83,7 @@ class Enemy{
   }
 
   void check_off_screen(){
-    if (x == 0) {
+    if (x + width == 0) {
       death_stuff();
     }
   }
@@ -94,7 +95,7 @@ class Enemy{
         shotys[shot_count] = y;
         shot_count++;
         if (shot_count > 6) shot_count = 0;
-        shotdelay = 90;
+        shotdelay = shotdelayinitial;
       }
       else{
         shotdelay--;
@@ -109,9 +110,9 @@ class Enemy{
           shotxs[i] = WIDTH+10;
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
-            if (audio_enabled)tune.tone(80, 80);
             which_led = 1;
             led_countdown = 15;
+            if (audio_enabled){tune.tone(80, 80);}
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -129,9 +130,9 @@ class Enemy{
           shotxs[i] = WIDTH+10;
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
-            if (audio_enabled)tune.tone(80, 80);
             which_led = 1;
             led_countdown = 15;
+            if (audio_enabled){tune.tone(80, 80);}
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -165,9 +166,53 @@ class Enemy{
           shotxs[i] = WIDTH+10;
           shotys[i] = HEIGHT+10;
           if (player_inv_countdown <=0){
-            if (audio_enabled)tune.tone(80, 80);
             which_led = 1;
             led_countdown = 15;
+            if (audio_enabled){tune.tone(80, 80);}
+            player_HP--;
+            player_invincibility(invincibility_length);
+          }
+        }
+      }
+      else if (enemy_type == BOSS){
+        if ((shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+3 >= player_y && shotys[i]+3 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+3 >= player_y && shotys[i]+3 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+4 >= player_y && shotys[i]+4 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+4 >= player_y && shotys[i]+4 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+16 >= player_y && shotys[i]+16 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+16 >= player_y && shotys[i]+16 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+17 >= player_y && shotys[i]+17 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+17 >= player_y && shotys[i]+17 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+38 >= player_y && shotys[i]+38 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+38 >= player_y && shotys[i]+38 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+39 >= player_y && shotys[i]+39 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+39 >= player_y && shotys[i]+39 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+51 >= player_y && shotys[i]+51 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+51 >= player_y && shotys[i]+51 <= player_y+8)||
+        (shotxs[i] >= player_x && shotxs[i] <= player_x+16 &&
+        shotys[i]+52 >= player_y && shotys[i]+52 <= player_y+8) ||
+        (shotxs[i]+8 >= player_x && shotxs[i]+8 <= player_x+16 &&
+        shotys[i]+52 >= player_y && shotys[i]+52 <= player_y+8)){
+          shotxs[i] = WIDTH+10;
+          shotys[i] = HEIGHT+10;
+          if (player_inv_countdown <=0){
+            which_led = 1;
+            led_countdown = 15;
+            if (audio_enabled){tune.tone(80, 80);}
             player_HP--;
             player_invincibility(invincibility_length);
           }
@@ -183,6 +228,9 @@ class Enemy{
         }
         else if (enemy_type == BIG){
           arduboy.drawBitmap(shotxs[i],shotys[i],enemybigshot,16,16,WHITE);
+        }
+        else if (enemy_type == BOSS){
+          arduboy.drawBitmap(shotxs[i],shotys[i],enemybossshot,8,56,WHITE);
         }
       }
       else{
@@ -202,6 +250,10 @@ class Enemy{
             }
             else if (enemy_type == BIG){
               arduboy.drawBitmap(shotxs[i],shotys[i],enemybigshot,16,16,WHITE);
+              shotxs[i]--;
+            }
+            else if (enemy_type == BOSS){
+              arduboy.drawBitmap(shotxs[i],shotys[i],enemybossshot,8,56,WHITE);
               shotxs[i]--;
             }
           }
@@ -228,7 +280,8 @@ class Enemy{
       HP--;
       if (audio_enabled)tune.tone(100, 80);
       if (player_inv_countdown <=0){
-        arduboy.setRGBled(255,0,0);
+        which_led = 1;
+        led_countdown = 15;
         player_HP--;
         player_invincibility(invincibility_length);
       }
@@ -271,7 +324,7 @@ class Enemy{
       if (y <= Y_MIN){
         v_dir = DOWN;
       }
-      if (v_dir == DOWN && y <+ Y_MAX){
+      if (v_dir == DOWN && y <= Y_MAX){
         y++;
       }
       if (y >= Y_MAX){
@@ -330,7 +383,26 @@ class Enemy{
   }
 
   void update_enemy_boss(){
-    
+    if (arduboy.everyXFrames(framedelay) && timeGo && !gamePaused){
+      if (x > WIDTH-32)x--;
+      if (v_dir == UP && y > 0){
+        y--;
+      }
+      if (y <= 0){
+        v_dir = DOWN;
+      }
+      if (v_dir == DOWN && y + 46 <= Y_MAX){
+        y++;
+      }
+      if (y +46 >= Y_MAX){
+        v_dir = UP;
+      }
+    }
+    arduboy.drawBitmap(x,y,enemyboss,32,56,WHITE);
+    check_enemy_collision_with_player();
+    check_off_screen();
+    check_HP();
+    shoot();
   }
     
 };

@@ -58,18 +58,36 @@ void create_enemy_big(){
   newenemy.HP = 4;
   newenemy.shotdelayinitial = 70;
   newenemy.shotdelay = 70;
-  newenemy.y = random (Y_MIN, Y_MAX - 8);
+  newenemy.y = random(Y_MIN, Y_MAX - 8);
   newenemy.on_spawn();
   enemy_arr[enemy_count + 1] = newenemy;
   big_countdown = 300;
 }
 
+void create_enemy_boss(){
+  boss_on_screen = true;
+  Enemy newenemy;
+  newenemy.isEnemy = true;
+  newenemy.framedelay = 5;
+  newenemy.enemy_type = BOSS;
+  newenemy.score_worth = 100;
+  newenemy.width = 32;
+  newenemy.height = 56;
+  newenemy.HP = 20;
+  newenemy.shotdelayinitial = 20;
+  newenemy.shotdelay = 20;
+  newenemy.y = random(Y_MIN, Y_MAX-10);
+  newenemy.on_spawn();
+  enemy_arr[enemy_count + 1] = newenemy;
+  boss_countdown = 3600;
+}
+
 void create_enemies(){
-  if (!timeGo || gamePaused)return;
+  if (!timeGo || gamePaused || boss_on_screen)return;
   if (enemy_countdown == 0){
       if (enemy_count < max_enemies){
         if (enemy_arr[enemy_count+1].isEnemy == false){
-          byte ran = random(0,3);
+          byte ran = random(0,4);
           if (ran == SMALL){ 
             create_enemy_small();
           }
@@ -94,6 +112,24 @@ void create_enemies(){
               }
             }
           }
+          if (ran == BOSS){
+            if (boss_countdown == 0){
+              create_enemy_boss();
+            }
+            else{
+              if (big_countdown == 0){
+                create_enemy_big();
+              }
+              else{
+                if (med_countdown == 0){
+                  create_enemy_med();
+                }
+                else{
+                  create_enemy_small();
+                }
+              }
+            }
+          }
         }
         enemy_count +=1;
       }
@@ -103,6 +139,7 @@ void create_enemies(){
   else {enemy_countdown--;}
   if (med_countdown > 0) med_countdown--;
   if (big_countdown >0) big_countdown--;
+  if (boss_countdown >0) boss_countdown--;
 }
 
 void star_create_depth(byte depth){
@@ -230,6 +267,7 @@ void reset_default_values(){
   enemy_countdown = enemy_countdown_initial;
   med_countdown = 900;
   big_countdown = 2400;
+  boss_countdown = 3600;
   countdown = 30;
   player_x = 0;
   player_y = (HEIGHT / 2);
