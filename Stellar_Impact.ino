@@ -47,6 +47,10 @@ void title_menu(){
     player_HP = 3; 
     player_is_alive = true;
     countdown = 30;
+   for (int i = 0; i<8; i++){
+      secret[i] = 5;
+    }
+    secret_tracker =0;
     star_create_gamestart();
   }
 }
