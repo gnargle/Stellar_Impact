@@ -7,6 +7,9 @@ byte audio_countdown = 0;
 byte led_countdown;
 byte which_led = 0;
 
+byte secret[8];
+byte secret_tracker = 0;
+
 byte enemy_count = 0;
 byte max_enemies = 9;
 byte enemy_countdown_initial = 60;

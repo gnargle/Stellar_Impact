@@ -288,3 +288,86 @@ void reset_default_values(){
   }
 }
 
+void check_secret(){ //0 = u, 1 = d, 2= l, 3= r
+  if (countdown == 0){
+    if (arduboy.pressed(UP_BUTTON)){
+      secret[secret_tracker] = 0;
+      secret_tracker++;
+      countdown = 10;
+    }
+    if (arduboy.pressed(DOWN_BUTTON)){
+      secret[secret_tracker] = 1;
+      secret_tracker++;
+      countdown = 10;
+    }
+    if (arduboy.pressed(LEFT_BUTTON)){
+      secret[secret_tracker] = 2;
+      secret_tracker++;
+      countdown = 10;
+    }
+    if (arduboy.pressed(RIGHT_BUTTON)){
+      secret[secret_tracker] = 3;
+      secret_tracker++;
+      countdown = 10;
+    }
+    if(secret[0] !=2 && secret[0] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[1] != 3 && secret[1] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[2] != 2 && secret[2] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[3] != 3 && secret[3] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[4] != 1 && secret[4] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[5] != 1 && secret[5] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[6] != 0 && secret[6] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+    if(secret[7] != 0 && secret[7] != 5){
+      for (int i = 0; i<8; i++){
+        secret[i] = 5;
+      }
+      secret_tracker = 0;
+    }
+  }
+  else if (countdown >0) {countdown--;}
+  
+  if (secret[0]==2 && secret[1]== 3 && secret[2] == 2 && secret[3] == 3 && 
+  secret[4] == 1 && secret [5] == 1 && secret[6] == 0 && secret[7] == 0){
+    arduboy.clear();
+    arduboy.setCursor((WIDTH/2) - ((sizeof("For Robyn.") - 1) * CHAR_WIDTH /2)
+    , (HEIGHT/2) - (CHAR_HEIGHT / 2));
+    arduboy.print("For Robyn.");
+    arduboy.drawBitmap(WIDTH/2 - 4,10+(HEIGHT/2) - (CHAR_HEIGHT / 2), heart, 8,8,WHITE);
+  }
+}
+

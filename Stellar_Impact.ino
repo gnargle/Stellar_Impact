@@ -10,7 +10,6 @@
 #include "helper_functions.h"
 #include "player.h"
 
-
 //Arduboy arduboy;
 
 #define CHAR_WIDTH 6
@@ -27,7 +26,7 @@ void title_menu(){
   sprintf(port, "%i", high_score);
   debug(port,3,28);
   if (death_countdown != 0){ death_countdown--; return;}
-
+  check_secret();
   if (arduboy.pressed(DOWN_BUTTON) && audio_countdown == 0){
     audio_enabled = !audio_enabled;
     audio_countdown = 30;
@@ -61,7 +60,9 @@ void setup() {
   audio_enabled = read_EEPROM(EEPROM_AUDIO_ON_OFF);
   if (audio_enabled == true){audio.on();}
   else{audio.off();}
-  
+  for (int i = 0; i<8; i++){
+    secret[i] = 5;
+  }
 }
 
 void loop() {
@@ -70,7 +71,6 @@ void loop() {
   arduboy.clear();
   if (!gameBegun) {
     title_menu(); 
-    //debug("new",0,0);
     arduboy.display();
   }
   else if(gamePaused){
