@@ -8,6 +8,7 @@
 #include "enemy.h"
 #include "starfield.h"
 #include "helper_functions.h"
+#include "highscore.h"
 #include "player.h"
 
 //Arduboy arduboy;
