@@ -1,7 +1,7 @@
 #define HIGHSCORE_INIT 10
 
 #define EEPROM_HEADER_LENGTH 15
-#define EEPROM_HEADER_START 40
+#define EEPROM_HEADER_START 39
 #define EEPROM_START (EEPROM_HEADER_START + EEPROM_HEADER_LENGTH)
 
 const char EepromHeader[EEPROM_HEADER_LENGTH] = "Stellar_Impact";
@@ -12,8 +12,18 @@ byte read_EEPROM(int offset){
   return val;
 }
 
-void write_EEPROM(int offset, int val){
+void write_EEPROM(int offset, byte val){
   EEPROM.update(EEPROM_START + offset, val);
+}
+
+void reset_EEPROM() {
+  for (int i = EEPROM_HEADER_START; i < EEPROM_START; i++) {
+    EEPROM.update(EEPROM_HEADER_START + i, EepromHeader[i]);
+  }
+
+  write_EEPROM(2, HIGHSCORE_INIT);
+  write_EEPROM(1, HIGHSCORE_INIT);
+  write_EEPROM(0, 0);
 }
 
 void validate_EEPROM() {
@@ -25,44 +35,58 @@ void validate_EEPROM() {
     }
   }
 
-  if (!headerCorrect) {
-    // write EEPROM header
-    for (int i = EEPROM_HEADER_START; i < EEPROM_START; i++) {
-      EEPROM.update(EEPROM_HEADER_START + i, EepromHeader[i]);
+  if (headerCorrect) {
+    byte valHigh = read_EEPROM(0);
+    byte valLow = read_EEPROM(1);
+    byte checksum = read_EEPROM(2);
+    byte expected = valHigh ^ valLow;
+    if(checksum != expected) {
+      Serial.print("Read wrong: ");
+      Serial.print(checksum, HEX);
+      Serial.print(" ");
+      Serial.println(expected, HEX);
+      headerCorrect = false;
     }
-    
-    write_EEPROM(1, HIGHSCORE_INIT);
-    write_EEPROM(0, 0);
+  }
+
+  if (!headerCorrect) {
+    reset_EEPROM();
   }
 }
 
 short read_High_Score(){
   // score should be 2 bytes long since we're using a short
-  // we will use bytes 54 and 55
-  //byte 54 is high byte, byte 55 is low byte
-  byte val;
-  byte val1;
+  byte valHigh;
+  byte valLow;
   short hs;
 
   validate_EEPROM();
-  val = read_EEPROM(0);
-  val1 = read_EEPROM(1);
+  valHigh = read_EEPROM(0);
+  valLow = read_EEPROM(1);
   
   //by this point, we have a 2 value array containing the high and low bytes of high score.
   //so we or them together with the high byte bitshifted to create a high score short
-  hs = (val << 8) | val1;
+  hs = (valHigh << 8) | valLow;
   
   return hs;
 }
 
 void write_High_Score(){
   if (score > high_score){
-    byte val;
-    byte val1;
-    val = score & 0xFF; // get low byte of score
-    write_EEPROM(1,val);
-    val1 = (score >> 8) & 0xFF; // get high byte of score
-    write_EEPROM(0,val1);
+    byte valHigh;
+    byte valLow;
+    byte checksum;
+    
+    valHigh = (score >> 8) & 0xFF;
+    write_EEPROM(0,valHigh);
+    
+    valLow = score & 0xFF;
+    write_EEPROM(1,valLow);
+    
+    checksum = valHigh ^ valLow;
+    write_EEPROM(2,checksum);
+      Serial.print("Wrote: ");
+      Serial.println(checksum, HEX);
   }
 }
 
