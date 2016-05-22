@@ -7,6 +7,13 @@
 #define CHAR_WIDTH 6
 #define CHAR_HEIGHT 8
 
+#define HIGHSCORE_INIT 10
+#define EEPROM_HEADER_LENGTH 15
+#define EEPROM_HEADER_START 40
+#define EEPROM_START (EEPROM_HEADER_START + EEPROM_HEADER_LENGTH)
+
+const char EepromHeader[EEPROM_HEADER_LENGTH] = "Stellar_Impact";
+
 void debug(char* debug_text, int x, int y){
   //max size 21
   arduboy.setCursor(x,y);
@@ -212,39 +219,52 @@ void draw_ui(){
   }
 }
 
-byte read_EEPROM(int address){
+byte read_EEPROM(int offset){
   byte val;
-  val = EEPROM.read(address);
+  val = EEPROM.read(EEPROM_START + offset);
   return val;
 }
 
-void write_EEPROM(int address, int val){
-  EEPROM.update(address, val);
+void write_EEPROM(int offset, int val){
+  EEPROM.update(EEPROM_START + offset, val);
+}
+
+void validate_EEPROM() {
+  bool headerCorrect = true;
+  for (int i = EEPROM_HEADER_START; i < EEPROM_START; i++) {
+    if(EEPROM.read(EEPROM_HEADER_START + i) != EepromHeader[i]) {
+      headerCorrect = false;
+      break;
+    }
+  }
+
+  if (!headerCorrect) {
+    // write EEPROM header
+    for (int i = EEPROM_HEADER_START; i < EEPROM_START; i++) {
+      EEPROM.update(EEPROM_HEADER_START + i, EepromHeader[i]);
+    }
+    
+    write_EEPROM(1, HIGHSCORE_INIT);
+    write_EEPROM(0, 0);
+  }
 }
 
 short read_High_Score(){
   // score should be 2 bytes long since we're using a short
   // we will use bytes 54 and 55
   //byte 54 is high byte, byte 55 is low byte
-  byte addr = 54;
   byte val;
   byte val1;
-  byte val_arr[2];
   short hs;
-    val = read_EEPROM(addr);
-    val1 = read_EEPROM(addr+1);
-    if (val == 255 && val1 == 255) {
-      // if the EEPROM value is 255, it's uninitialised.
-      // so we initialise it with a score of 100.
-        write_EEPROM(addr+1, 100); 
-        val = 100;
-        write_EEPROM(addr,0);
-        val1 = 0;
-    }
-    val_arr[0] = val;
+
+  validate_EEPROM();
+  val = read_EEPROM(0);
+  val1 = read_EEPROM(1);
+  
   //by this point, we have a 2 value array containing the high and low bytes of high score.
   //so we or them together with the high byte bitshifted to create a high score short
   hs = (val << 8) | val1;
+  
   return hs;
 }
 
@@ -253,9 +273,9 @@ void write_High_Score(){
     byte val;
     byte val1;
     val = score & 0xFF; // get low byte of score
-    write_EEPROM(55,val);
+    write_EEPROM(1,val);
     val1 = (score >> 8) & 0xFF; // get high byte of score
-    write_EEPROM(54,val1);
+    write_EEPROM(0,val1);
   }
 }
 
