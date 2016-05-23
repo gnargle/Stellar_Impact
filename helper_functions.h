@@ -212,53 +212,6 @@ void draw_ui(){
   }
 }
 
-byte read_EEPROM(int address){
-  byte val;
-  val = EEPROM.read(address);
-  return val;
-}
-
-void write_EEPROM(int address, int val){
-  EEPROM.update(address, val);
-}
-
-short read_High_Score(){
-  // score should be 2 bytes long since we're using a short
-  // we will use bytes 54 and 55
-  //byte 54 is high byte, byte 55 is low byte
-  byte addr = 54;
-  byte val;
-  byte val1;
-  byte val_arr[2];
-  short hs;
-    val = read_EEPROM(addr);
-    val1 = read_EEPROM(addr+1);
-    if (val == 255 && val1 == 255) {
-      // if the EEPROM value is 255, it's uninitialised.
-      // so we initialise it with a score of 100.
-        write_EEPROM(addr+1, 100); 
-        val = 100;
-        write_EEPROM(addr,0);
-        val1 = 0;
-    }
-    val_arr[0] = val;
-  //by this point, we have a 2 value array containing the high and low bytes of high score.
-  //so we or them together with the high byte bitshifted to create a high score short
-  hs = (val << 8) | val1;
-  return hs;
-}
-
-void write_High_Score(){
-  if (score > high_score){
-    byte val;
-    byte val1;
-    val = score & 0xFF; // get low byte of score
-    write_EEPROM(55,val);
-    val1 = (score >> 8) & 0xFF; // get high byte of score
-    write_EEPROM(54,val1);
-  }
-}
-
 void reset_default_values(){
   score_recorded = false;
   score = 0;
